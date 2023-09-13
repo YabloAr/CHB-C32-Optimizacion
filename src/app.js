@@ -14,6 +14,7 @@ import passport from "passport";
 import { initPassport } from "./config/passport.config.js";
 import setupSocket from "./chat/socket.js";
 import cors from 'cors'
+import compression from "express-compression";
 
 //EXPRESS - Definimos el servidor y su config
 const PORT = 8080
@@ -44,7 +45,8 @@ app.use(session({
     saveUninitialized: false
 }))
 
-//ROUTER - Manejador de rutas de toda el servidor
+//ROUTER con Brotli- Manejador de rutas de toda el servidor
+app.use(compression({ brotli: { enabled: true, zlib: {} } })); //Config de uso global para brotli
 app.use("/", appRouter)
 
 //HANDLEBARS - Indicamos el uso de handlebars
