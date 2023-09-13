@@ -3,6 +3,7 @@ import CartDAO from '../models/daos/carts.dao.js'
 import productsModel from "../models/schemas/products.schema.js";
 import SafeUsersDTO from '../controllers/DTO/safeUser.dto.js';
 import { checkAdmin, checkSession, checkUser } from "../middlewares/auth.middleware.js";
+import createProducts from "../mocking/mockingProducts.js";
 
 const router = Router()
 
@@ -17,7 +18,8 @@ router.get('/', (req, res) => {
     const toCurrent = 'http://localhost:8080/api/sessions/current'
     const toAdmin = 'http://localhost:8080/admin'
     const toPurchase = 'http://localhost:8080/api/tickets/6500b2f27498919c55e6d7f8/purchase'
-    res.render('landing', { toProducts, toCarts, toLogin, toRegister, toProfile, toChat, toCurrent, toAdmin, toPurchase })
+    const toMockingProducts = 'http://localhost:8080/mockingproducts'
+    res.render('landing', { toProducts, toCarts, toLogin, toRegister, toProfile, toChat, toCurrent, toAdmin, toPurchase, toMockingProducts })
 })
 //-------------------------------USER UTILITIES VIEWS
 router.get('/register', (req, res) => {
@@ -122,6 +124,11 @@ router.get('/carts/:cid', async (req, res) => {
         quantity: productData.quantity
     }));
     res.render('cart', { cid, products })
+})
+
+router.get('/mockingproducts', async (req, res) => {
+    let randomProducts = await createProducts(100)
+    res.send({ message: 'Mock products x100 created with faker and falso.', payload: randomProducts })
 })
 
 

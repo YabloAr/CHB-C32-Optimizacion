@@ -6,6 +6,7 @@ import sessionsRouter from './sessions.router.js'
 import viewsRouter from './views.router.js'
 import messageRouter from './message.router.js'
 import ticketsRouter from './tickets.router.js'
+import createProducts from '../mocking/mockingProducts.js'
 
 const router = Router()
 
