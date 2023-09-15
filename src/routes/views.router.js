@@ -4,6 +4,8 @@ import productsModel from "../models/schemas/products.schema.js";
 import SafeUsersDTO from '../controllers/DTO/safeUser.dto.js';
 import { checkAdmin, checkSession, checkUser } from "../middlewares/auth.middleware.js";
 import createProducts from "../mocking/mockingProducts.js";
+import EError from "../errors/EErrorNum.js";
+import customError from "../errors/customErrors.js";
 
 const router = Router()
 
@@ -127,8 +129,17 @@ router.get('/carts/:cid', async (req, res) => {
 })
 
 router.get('/mockingproducts', async (req, res) => {
-    let randomProducts = await createProducts(100)
-    res.send({ message: 'Mock products x100 created with faker and falso.', payload: randomProducts })
+    try {
+        let randomProducts = await createProducts(100)
+        res.send({ message: 'Mock products x100 created with faker and falso.', payload: randomProducts })
+    } catch (error) {
+        customError.createError({
+            name: "mocking-products error",
+            cause: "Cannot create products",
+            message: "Try again",
+            code: EError.MOCKING_ERROR //4
+        })
+    }
 })
 
 
